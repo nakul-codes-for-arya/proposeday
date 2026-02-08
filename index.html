@@ -66,8 +66,13 @@ let pages = [
     <p>I made something small for you.</p>
     `,
     `
-    <h1>Your Smile 🌸</h1>
+    <h1>Happy Diwali ✨</h1>
     <img src="pic2.jpg">
+    <p>Thank god you asked me out or else I would never know what happiness meant.</p>
+    `,
+    `
+    <h1>Your Smile 🌸</h1>
+    <img src="pic3.jpg">
     <p>The way you smile when you're happy… it stays in my head all day.</p>
     `,
     `
@@ -75,9 +80,14 @@ let pages = [
     <img src="pic3.jpg">
     <p>The way you get excited around animals… it’s the cutest thing ever.</p>
     `,
+    `    
+    <h1>Sassy You!! 🥵🔥</h1>
+    <img src="pic4.jpg">
+    <p>You always look so stunning! Definitely I maxed out my luck with you</p>
+    `,
     `
     <h1>Us 💖</h1>
-    <img src="pic4.jpg">
+    <img src="pic5.jpg">
     <p>Even across the distance, you somehow make everything feel closer.</p>
     `,
     `
@@ -93,7 +103,7 @@ let pages = [
 let currentPage = -1;
 
 screen.innerHTML = `
-<h1>Hey You 💖</h1>
+<h1>Hi Pingu 💖</h1>
 <p>Tap to begin something special...</p>
 <button onclick="startStory()">Start 💕</button>
 `;
@@ -132,10 +142,17 @@ function moveNo() {
 }
 
 function sayYes() {
-    document.body.innerHTML =
-    "<h1 style='margin-top:40%;color:#ff1493;'>You just made me the happiest person 💖</h1><p>I can't wait to make more memories with you.</p>";
+    screen.classList.remove("fade");
+    void screen.offsetWidth;
+    screen.classList.add("fade");
+
+    screen.innerHTML = `
+    <h1 style="color:#ff1493;">You just made me the happiest person 💖</h1>
+    <p>I can't wait to make more memories with you.</p>
+    `;
 }
 </script>
 
 </body>
 </html>
+
