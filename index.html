@@ -2,34 +2,18 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For You 💖</title>
+<title>Our Story 💖</title>
 
 <style>
 body {
     margin: 0;
-    padding: 0;
-    overflow: hidden;
+    padding: 20px;
     background: linear-gradient(135deg, #ffd6e8, #ffe6f7);
     font-family: Arial, sans-serif;
     text-align: center;
 }
 
-h1 {
-    margin-top: 40px;
-    color: #ff1493;
-}
-
-#gameArea {
-    position: relative;
-    width: 100vw;
-    height: 60vh;
-}
-
-.heart {
-    position: absolute;
-    font-size: 35px;
-    cursor: pointer;
-}
+h1 { color: #ff1493; }
 
 button {
     padding: 15px 25px;
@@ -37,97 +21,111 @@ button {
     border: none;
     border-radius: 25px;
     margin: 10px;
-}
-
-#yesBtn {
     background: #ff69b4;
     color: white;
 }
 
-#noBtn {
-    background: gray;
-    color: white;
-    position: relative;
+.hidden { display: none; }
+
+.heart {
+    font-size: 50px;
+    position: absolute;
+    cursor: pointer;
 }
 </style>
 </head>
 
 <body>
 
-<h1 id="title">Catch 5 Hearts 💕</h1>
-<p id="score">Hearts caught: 0</p>
+<!-- LEVEL 1 -->
+<div id="level1">
+    <h1>Level 1 💕</h1>
+    <p>Catch my heart 😌</p>
+</div>
 
-<div id="gameArea"></div>
+<!-- LEVEL 2 -->
+<div id="level2" class="hidden">
+    <h1>Level 2 💌</h1>
+    <p>Who misses you the most? 🥺</p>
+    <button onclick="nextLevel()">Me 😏</button>
+    <button onclick="wrongAnswer()">Not you</button>
+</div>
 
-<div id="question" style="display:none;">
-    <h1>Will You Be My Valentine? 🥺💖</h1>
-    <button id="yesBtn" onclick="sayYes()">YES 💕</button>
+<!-- LEVEL 3 -->
+<div id="level3" class="hidden">
+    <h1>Level 3 🔐</h1>
+    <p>Hold the button for 2 seconds to unlock my heart 💖</p>
+    <button id="holdBtn">Hold Me 💕</button>
+</div>
+
+<!-- FINAL -->
+<div id="final" class="hidden">
+    <h1>Final Level 💖</h1>
+    <p>After this journey...</p>
+    <h2>Will You Be My Valentine? 🥺💖</h2>
+    <button onclick="sayYes()">YES 💕</button>
     <button id="noBtn" onclick="moveNo()">No 😜</button>
 </div>
 
 <script>
-let score = 0;
-let maxScore = 5;
-let gameArea = document.getElementById("gameArea");
+let heart = document.createElement("div");
+heart.innerHTML = "💖";
+heart.classList.add("heart");
 
-function spawnHeart() {
-    let heart = document.createElement("div");
-    heart.innerHTML = "💖";
-    heart.classList.add("heart");
+heart.style.left = "50%";
+heart.style.top = "50%";
+heart.onclick = function() {
+    document.getElementById("level1").classList.add("hidden");
+    document.getElementById("level2").classList.remove("hidden");
+};
 
-    let x = Math.random() * (window.innerWidth - 40);
-    let y = Math.random() * (window.innerHeight * 0.6 - 40);
+document.body.appendChild(heart);
 
-    heart.style.left = x + "px";
-    heart.style.top = y + "px";
-
-    heart.onclick = function() {
-        score++;
-        document.getElementById("score").innerText = "Hearts caught: " + score;
-        heart.remove();
-
-        if (score >= maxScore) {
-            showQuestion();
-        }
-    };
-
-    gameArea.appendChild(heart);
+// Level 2
+function nextLevel() {
+    document.getElementById("level2").classList.add("hidden");
+    document.getElementById("level3").classList.remove("hidden");
 }
 
-function showQuestion() {
-    document.getElementById("title").style.display = "none";
-    document.getElementById("score").style.display = "none";
-    gameArea.style.display = "none";
-    document.getElementById("question").style.display = "block";
+function wrongAnswer() {
+    alert("Wrong answer 😜 Try again.");
 }
 
-function sayYes() {
-    document.body.innerHTML = "<h1 style='color:#ff1493;margin-top:40%;'>YAYYYY 💖💖💖</h1><p>You just made me the happiest person ever 😭💕</p>";
+// Level 3 - Long Press
+let holdBtn = document.getElementById("holdBtn");
+let holdTimer;
+
+holdBtn?.addEventListener("touchstart", startHold);
+holdBtn?.addEventListener("mousedown", startHold);
+
+function startHold() {
+    holdTimer = setTimeout(() => {
+        document.getElementById("level3").classList.add("hidden");
+        document.getElementById("final").classList.remove("hidden");
+    }, 2000);
 }
 
-let noClickCount = 0;
+holdBtn?.addEventListener("touchend", cancelHold);
+holdBtn?.addEventListener("mouseup", cancelHold);
 
+function cancelHold() {
+    clearTimeout(holdTimer);
+}
+
+// Final No Button Chaos
 function moveNo() {
-    noClickCount++;
-
     let btn = document.getElementById("noBtn");
-
     let maxX = window.innerWidth - btn.offsetWidth - 20;
-    let maxY = 200;
+    let maxY = window.innerHeight - btn.offsetHeight - 20;
 
     btn.style.position = "absolute";
     btn.style.left = Math.random() * maxX + "px";
     btn.style.top = Math.random() * maxY + "px";
-
-    if (noClickCount > 3) {
-        btn.style.transform = "scale(0.7)";
-    }
-    if (noClickCount > 6) {
-        btn.style.transform = "scale(0.5)";
-    }
 }
 
-setInterval(spawnHeart, 800);
+function sayYes() {
+    document.body.innerHTML = "<h1 style='margin-top:40%;color:#ff1493;'>YAYYYY 💖💖💖</h1><p>You completed all levels... and won my heart 😭💕</p>";
+}
 </script>
 
 </body>
