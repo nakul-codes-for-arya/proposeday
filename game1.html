@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You 💖</title>
+
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: linear-gradient(135deg, #ffd6e8, #ffe6f7);
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+h1 {
+    margin-top: 40px;
+    color: #ff1493;
+}
+
+#gameArea {
+    position: relative;
+    width: 100vw;
+    height: 60vh;
+}
+
+.heart {
+    position: absolute;
+    font-size: 35px;
+    cursor: pointer;
+}
+
+button {
+    padding: 15px 25px;
+    font-size: 18px;
+    border: none;
+    border-radius: 25px;
+    margin: 10px;
+}
+
+#yesBtn {
+    background: #ff69b4;
+    color: white;
+}
+
+#noBtn {
+    background: gray;
+    color: white;
+    position: relative;
+}
+</style>
+</head>
+
+<body>
+
+<h1 id="title">Catch 5 Hearts 💕</h1>
+<p id="score">Hearts caught: 0</p>
+
+<div id="gameArea"></div>
+
+<div id="question" style="display:none;">
+    <h1>Will You Be My Valentine? 🥺💖</h1>
+    <button id="yesBtn" onclick="sayYes()">YES 💕</button>
+    <button id="noBtn" onclick="moveNo()">No 😜</button>
+</div>
+
+<script>
+let score = 0;
+let maxScore = 5;
+let gameArea = document.getElementById("gameArea");
+
+function spawnHeart() {
+    let heart = document.createElement("div");
+    heart.innerHTML = "💖";
+    heart.classList.add("heart");
+
+    let x = Math.random() * (window.innerWidth - 40);
+    let y = Math.random() * (window.innerHeight * 0.6 - 40);
+
+    heart.style.left = x + "px";
+    heart.style.top = y + "px";
+
+    heart.onclick = function() {
+        score++;
+        document.getElementById("score").innerText = "Hearts caught: " + score;
+        heart.remove();
+
+        if (score >= maxScore) {
+            showQuestion();
+        }
+    };
+
+    gameArea.appendChild(heart);
+}
+
+function showQuestion() {
+    document.getElementById("title").style.display = "none";
+    document.getElementById("score").style.display = "none";
+    gameArea.style.display = "none";
+    document.getElementById("question").style.display = "block";
+}
+
+function sayYes() {
+    document.body.innerHTML = "<h1 style='color:#ff1493;margin-top:40%;'>YAYYYY 💖💖💖</h1><p>You just made me the happiest person ever 😭💕</p>";
+}
+
+let noClickCount = 0;
+
+function moveNo() {
+    noClickCount++;
+
+    let btn = document.getElementById("noBtn");
+
+    let maxX = window.innerWidth - btn.offsetWidth - 20;
+    let maxY = 200;
+
+    btn.style.position = "absolute";
+    btn.style.left = Math.random() * maxX + "px";
+    btn.style.top = Math.random() * maxY + "px";
+
+    if (noClickCount > 3) {
+        btn.style.transform = "scale(0.7)";
+    }
+    if (noClickCount > 6) {
+        btn.style.transform = "scale(0.5)";
+    }
+}
+
+setInterval(spawnHeart, 800);
+</script>
+
+</body>
+</html>
