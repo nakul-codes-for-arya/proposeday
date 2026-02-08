@@ -2,15 +2,16 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Our Story 💖</title>
+<title>For You 💖</title>
 
 <style>
 body {
     margin: 0;
-    padding: 20px;
+    padding: 30px;
     background: linear-gradient(135deg, #ffd6e8, #ffe6f7);
     font-family: Arial, sans-serif;
     text-align: center;
+    color: #444;
 }
 
 h1 { color: #ff1493; }
@@ -20,99 +21,63 @@ button {
     font-size: 18px;
     border: none;
     border-radius: 25px;
-    margin: 10px;
+    margin-top: 30px;
     background: #ff69b4;
     color: white;
 }
 
-.hidden { display: none; }
+.fade {
+    animation: fadeIn 0.8s ease-in-out;
+}
 
-.heart {
-    font-size: 50px;
-    position: absolute;
-    cursor: pointer;
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
 }
 </style>
 </head>
 
 <body>
 
-<!-- LEVEL 1 -->
-<div id="level1">
-    <h1>Level 1 💕</h1>
-    <p>Catch my heart 😌</p>
-</div>
-
-<!-- LEVEL 2 -->
-<div id="level2" class="hidden">
-    <h1>Level 2 💌</h1>
-    <p>Who misses you the most? 🥺</p>
-    <button onclick="nextLevel()">Me 😏</button>
-    <button onclick="wrongAnswer()">Not you</button>
-</div>
-
-<!-- LEVEL 3 -->
-<div id="level3" class="hidden">
-    <h1>Level 3 🔐</h1>
-    <p>Hold the button for 2 seconds to unlock my heart 💖</p>
-    <button id="holdBtn">Hold Me 💕</button>
-</div>
-
-<!-- FINAL -->
-<div id="final" class="hidden">
-    <h1>Final Level 💖</h1>
-    <p>After this journey...</p>
-    <h2>Will You Be My Valentine? 🥺💖</h2>
-    <button onclick="sayYes()">YES 💕</button>
-    <button id="noBtn" onclick="moveNo()">No 😜</button>
-</div>
+<div id="screen" class="fade"></div>
 
 <script>
-let heart = document.createElement("div");
-heart.innerHTML = "💖";
-heart.classList.add("heart");
+let screen = document.getElementById("screen");
 
-heart.style.left = "50%";
-heart.style.top = "50%";
-heart.onclick = function() {
-    document.getElementById("level1").classList.add("hidden");
-    document.getElementById("level2").classList.remove("hidden");
-};
+let pages = [
+    "<h1>Hey Beautiful 💕</h1><p>I made something small for you.</p>",
+    "<h1>Page 1 🌸</h1><p>The way you smile when you're happy… it stays in my head all day.</p>",
+    "<h1>Page 2 🐾</h1><p>The way you get excited around animals? It’s the cutest thing ever.</p>",
+    "<h1>Page 3 🌙</h1><p>Even across the distance, you somehow make everything feel closer.</p>",
+    "<h1>Page 4 ✨</h1><p>You don’t even realize how warm and comforting you are.</p>",
+    "<h1>One More Thing 💖</h1><p>I just really like you… a lot.</p>",
+    "<h1>So… 🥺</h1><p>Will you be my Valentine?</p>"
+];
 
-document.body.appendChild(heart);
+let currentPage = 0;
 
-// Level 2
-function nextLevel() {
-    document.getElementById("level2").classList.add("hidden");
-    document.getElementById("level3").classList.remove("hidden");
+function showPage() {
+    screen.classList.remove("fade");
+    void screen.offsetWidth;
+    screen.classList.add("fade");
+
+    screen.innerHTML = pages[currentPage];
+
+    if (currentPage < pages.length - 1) {
+        screen.innerHTML += "<button onclick='nextPage()'>Next 💕</button>";
+    } else {
+        screen.innerHTML += `
+            <button onclick="sayYes()">YES 💖</button>
+            <button id="noBtn" onclick="moveNo()">No 😜</button>
+        `;
+    }
 }
 
-function wrongAnswer() {
-    alert("Wrong answer 😜 Try again.");
+function nextPage() {
+    currentPage++;
+    showPage();
 }
 
-// Level 3 - Long Press
-let holdBtn = document.getElementById("holdBtn");
-let holdTimer;
-
-holdBtn?.addEventListener("touchstart", startHold);
-holdBtn?.addEventListener("mousedown", startHold);
-
-function startHold() {
-    holdTimer = setTimeout(() => {
-        document.getElementById("level3").classList.add("hidden");
-        document.getElementById("final").classList.remove("hidden");
-    }, 2000);
-}
-
-holdBtn?.addEventListener("touchend", cancelHold);
-holdBtn?.addEventListener("mouseup", cancelHold);
-
-function cancelHold() {
-    clearTimeout(holdTimer);
-}
-
-// Final No Button Chaos
 function moveNo() {
     let btn = document.getElementById("noBtn");
     let maxX = window.innerWidth - btn.offsetWidth - 20;
@@ -124,8 +89,11 @@ function moveNo() {
 }
 
 function sayYes() {
-    document.body.innerHTML = "<h1 style='margin-top:40%;color:#ff1493;'>YAYYYY 💖💖💖</h1><p>You completed all levels... and won my heart 😭💕</p>";
+    document.body.innerHTML =
+    "<h1 style='margin-top:40%;color:#ff1493;'>You just made me the happiest person 💖</h1><p>I can't wait to make more memories with you.</p>";
 }
+
+showPage();
 </script>
 
 </body>
