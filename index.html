@@ -12,6 +12,7 @@ body {
     font-family: Arial, sans-serif;
     text-align: center;
     color: #444;
+    overflow-x: hidden;
 }
 
 h1 { color: #ff1493; }
@@ -21,9 +22,17 @@ button {
     font-size: 18px;
     border: none;
     border-radius: 25px;
-    margin-top: 30px;
+    margin-top: 25px;
     background: #ff69b4;
     color: white;
+}
+
+img {
+    width: 80%;
+    max-width: 300px;
+    border-radius: 20px;
+    margin-top: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
 }
 
 .fade {
@@ -41,41 +50,75 @@ button {
 
 <div id="screen" class="fade"></div>
 
+<audio id="bgMusic" loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
+
 <script>
 let screen = document.getElementById("screen");
+let music = document.getElementById("bgMusic");
+music.volume = 0.4;
 
 let pages = [
-    "<h1>Hey Beautiful 💕</h1><p>I made something small for you.</p>",
-    "<h1>Page 1 🌸</h1><p>The way you smile when you're happy… it stays in my head all day.</p>",
-    "<h1>Page 2 🐾</h1><p>The way you get excited around animals? It’s the cutest thing ever.</p>",
-    "<h1>Page 3 🌙</h1><p>Even across the distance, you somehow make everything feel closer.</p>",
-    "<h1>Page 4 ✨</h1><p>You don’t even realize how warm and comforting you are.</p>",
-    "<h1>One More Thing 💖</h1><p>I just really like you… a lot.</p>",
-    "<h1>So… 🥺</h1><p>Will you be my Valentine?</p>"
+    `
+    <h1>Hey Beautiful 💕</h1>
+    <img src="pic1.jpg">
+    <p>I made something small for you.</p>
+    `,
+    `
+    <h1>Your Smile 🌸</h1>
+    <img src="pic2.jpg">
+    <p>The way you smile when you're happy… it stays in my head all day.</p>
+    `,
+    `
+    <h1>You & Animals 🐾</h1>
+    <img src="pic3.jpg">
+    <p>The way you get excited around animals… it’s the cutest thing ever.</p>
+    `,
+    `
+    <h1>Us 💖</h1>
+    <img src="pic4.jpg">
+    <p>Even across the distance, you somehow make everything feel closer.</p>
+    `,
+    `
+    <h1>One More Thing 🥺</h1>
+    <p>I just really, really like you.</p>
+    `,
+    `
+    <h1>So… 💌</h1>
+    <p>Will you be my Valentine?</p>
+    `
 ];
 
-let currentPage = 0;
+let currentPage = -1;
 
-function showPage() {
-    screen.classList.remove("fade");
-    void screen.offsetWidth;
-    screen.classList.add("fade");
+screen.innerHTML = `
+<h1>Hey You 💖</h1>
+<p>Tap to begin something special...</p>
+<button onclick="startStory()">Start 💕</button>
+`;
 
-    screen.innerHTML = pages[currentPage];
-
-    if (currentPage < pages.length - 1) {
-        screen.innerHTML += "<button onclick='nextPage()'>Next 💕</button>";
-    } else {
-        screen.innerHTML += `
-            <button onclick="sayYes()">YES 💖</button>
-            <button id="noBtn" onclick="moveNo()">No 😜</button>
-        `;
-    }
+function startStory() {
+    music.play();
+    nextPage();
 }
 
 function nextPage() {
     currentPage++;
-    showPage();
+    screen.classList.remove("fade");
+    void screen.offsetWidth;
+    screen.classList.add("fade");
+
+    if (currentPage < pages.length - 1) {
+        screen.innerHTML = pages[currentPage] +
+        "<button onclick='nextPage()'>Next 💕</button>";
+    } else {
+        screen.innerHTML = pages[currentPage] +
+        `
+        <button onclick="sayYes()">YES 💖</button>
+        <button id="noBtn" onclick="moveNo()">No 😜</button>
+        `;
+    }
 }
 
 function moveNo() {
@@ -92,8 +135,6 @@ function sayYes() {
     document.body.innerHTML =
     "<h1 style='margin-top:40%;color:#ff1493;'>You just made me the happiest person 💖</h1><p>I can't wait to make more memories with you.</p>";
 }
-
-showPage();
 </script>
 
 </body>
